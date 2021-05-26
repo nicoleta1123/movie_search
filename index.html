@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Movie Search</title>
+  </head>
+  <body>
+    <h1>Movie Search</h1>
+    <input
+      type="text"
+      id="movieName"
+      name="movieName"
+      placeholder="Enter movie name"
+    />
+
+    <div id="movie_grid" class="grid grid-flow-row"></div>
+
+    <script>
+      let inputEl = document.querySelectorAll("input");
+      inputEl.forEach((node) => (node.onchange = movieSearch));
+
+      async function movieSearch(event) {
+        const OMDB_API = `http://www.omdbapi.com/?s=${event.srcElement.value}&apikey=8bf835a0`;
+
+        await fetch(OMDB_API)
+          .then((response) => response.json())
+          .then((data) => {
+            const movies = data.Search;
+            const movieGrid = [];
+            movies.forEach((movie) => movieGrid.push(movie.Poster));
+            document.getElementById("movie_grid").innerHTML = movieGrid;
+          });
+      }
+    </script>
+  </body>
+</html>
